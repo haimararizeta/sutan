@@ -385,15 +385,165 @@ export function Contact({ t }) {
 }
 
 // ============================================================
+// Legal Modal
+// ============================================================
+
+const LEGAL_CONTENT = {
+  aviso: {
+    title: 'Aviso Legal',
+    body: `
+      <h3>Titular del sitio web</h3>
+      <p>En cumplimiento de la Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la Información y de Comercio Electrónico (LSSI-CE), se informa:</p>
+      <ul>
+        <li><strong>Denominación social:</strong> Sutan</li>
+        <li><strong>País:</strong> España</li>
+        <li><strong>Email de contacto:</strong> haimar.arizeta@gmail.com</li>
+      </ul>
+      <h3>Objeto</h3>
+      <p>El presente sitio web tiene por objeto la presentación de los servicios de Sutan: consultoría de inteligencia artificial, desarrollo web y software a medida para empresas.</p>
+      <h3>Propiedad intelectual</h3>
+      <p>Todos los contenidos del sitio web (textos, imágenes, diseño, código) son propiedad de Sutan o de sus licenciantes, y están protegidos por la legislación española e internacional sobre propiedad intelectual. Queda prohibida su reproducción total o parcial sin autorización expresa.</p>
+      <h3>Responsabilidad</h3>
+      <p>Sutan no se responsabiliza de los daños o perjuicios que pudieran derivarse del uso del sitio web o de la imposibilidad de acceso al mismo. El contenido del sitio puede modificarse, eliminarse o actualizarse sin previo aviso.</p>
+      <h3>Legislación aplicable</h3>
+      <p>Las presentes condiciones se rigen por la legislación española. Para cualquier controversia, las partes se someten a los juzgados y tribunales de España.</p>
+    `
+  },
+  privacidad: {
+    title: 'Política de Privacidad',
+    body: `
+      <h3>Responsable del tratamiento</h3>
+      <p><strong>Identidad:</strong> Sutan<br/><strong>Email:</strong> haimar.arizeta@gmail.com</p>
+      <h3>Datos que recopilamos</h3>
+      <p>A través del formulario de contacto recopilamos: nombre, nombre de empresa, dirección de email y el mensaje que nos envías. No recopilamos datos especialmente sensibles.</p>
+      <h3>Finalidad</h3>
+      <p>Los datos facilitados se utilizan exclusivamente para responder a tu consulta y gestionar la comunicación contigo. No se utilizan para ninguna otra finalidad sin tu consentimiento.</p>
+      <h3>Legitimación</h3>
+      <p>La base legal del tratamiento es tu consentimiento expreso al enviar el formulario de contacto (art. 6.1.a RGPD).</p>
+      <h3>Conservación</h3>
+      <p>Los datos se conservan durante el tiempo necesario para atender tu solicitud y, en su caso, durante los plazos legalmente establecidos.</p>
+      <h3>Destinatarios</h3>
+      <p>Los datos no se ceden a terceros, salvo obligación legal. Para el envío de emails utilizamos EmailJS (emailjs.com), que actúa como encargado del tratamiento bajo sus propias políticas de privacidad.</p>
+      <h3>Tus derechos</h3>
+      <p>Puedes ejercer tus derechos de acceso, rectificación, supresión, oposición, portabilidad y limitación del tratamiento enviando un email a <strong>haimar.arizeta@gmail.com</strong>. También tienes derecho a presentar una reclamación ante la Agencia Española de Protección de Datos (aepd.es).</p>
+    `
+  },
+  cookies: {
+    title: 'Política de Cookies',
+    body: `
+      <h3>¿Qué son las cookies?</h3>
+      <p>Las cookies son pequeños archivos de texto que los sitios web almacenan en tu navegador para recordar información sobre tu visita.</p>
+      <h3>Cookies que utilizamos</h3>
+      <table style="width:100%;border-collapse:collapse;font-size:14px;margin:16px 0;">
+        <thead>
+          <tr style="border-bottom:1px solid rgba(37,99,235,0.2);">
+            <th style="text-align:left;padding:8px;color:#60A5FA;">Cookie</th>
+            <th style="text-align:left;padding:8px;color:#60A5FA;">Tipo</th>
+            <th style="text-align:left;padding:8px;color:#60A5FA;">Finalidad</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+            <td style="padding:8px;">sutan_cookies</td>
+            <td style="padding:8px;">Técnica</td>
+            <td style="padding:8px;">Recuerda si aceptaste las cookies</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+            <td style="padding:8px;">_vercel_*</td>
+            <td style="padding:8px;">Analítica</td>
+            <td style="padding:8px;">Estadísticas anónimas de visitas (Vercel Analytics)</td>
+          </tr>
+        </tbody>
+      </table>
+      <h3>Cómo gestionar las cookies</h3>
+      <p>Puedes configurar tu navegador para rechazar o eliminar las cookies. Ten en cuenta que esto puede afectar al funcionamiento del sitio. Consulta la ayuda de tu navegador para más información.</p>
+      <h3>Base legal</h3>
+      <p>Las cookies técnicas son necesarias para el funcionamiento del sitio (art. 22.2 LSSI). Las cookies analíticas requieren tu consentimiento, que puedes otorgar o revocar en cualquier momento.</p>
+    `
+  }
+};
+
+export function LegalModal({ doc, onClose }) {
+  const content = LEGAL_CONTENT[doc];
+  if (!content) return null;
+  return (
+    <div style={{
+      position: 'fixed', inset: 0, zIndex: 200,
+      background: 'rgba(6,9,18,0.92)', backdropFilter: 'blur(8px)',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      padding: '24px'
+    }} onClick={onClose}>
+      <div style={{
+        background: '#0F2044', border: '1px solid rgba(37,99,235,0.3)',
+        borderRadius: 16, maxWidth: 700, width: '100%',
+        maxHeight: '80vh', overflow: 'hidden',
+        display: 'flex', flexDirection: 'column'
+      }} onClick={e => e.stopPropagation()}>
+        <div style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          padding: '24px 32px', borderBottom: '1px solid rgba(37,99,235,0.2)'
+        }}>
+          <span style={{ fontWeight: 700, fontSize: 18 }}>{content.title}</span>
+          <button onClick={onClose} style={{
+            background: 'rgba(37,99,235,0.15)', border: '1px solid rgba(37,99,235,0.3)',
+            color: '#F8FAFC', borderRadius: 8, padding: '6px 14px', cursor: 'pointer', fontSize: 14
+          }}>Cerrar ✕</button>
+        </div>
+        <div style={{ padding: '24px 32px', overflowY: 'auto', color: '#94A3B8', fontSize: 15, lineHeight: 1.7 }}
+          dangerouslySetInnerHTML={{ __html: content.body }} />
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
+// Cookie Banner
+// ============================================================
+
+export function CookieBanner({ onAccept }) {
+  return (
+    <div style={{
+      position: 'fixed', bottom: 24, left: 24, right: 24, zIndex: 150,
+      background: '#0F2044', border: '1px solid rgba(37,99,235,0.35)',
+      borderRadius: 12, padding: '20px 24px',
+      display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+      gap: 16, flexWrap: 'wrap',
+      boxShadow: '0 8px 32px rgba(0,0,0,0.5)'
+    }}>
+      <p style={{ margin: 0, color: '#94A3B8', fontSize: 14, maxWidth: 600 }}>
+        Utilizamos cookies propias y de análisis para mejorar tu experiencia.
+        Puedes consultar nuestra{' '}
+        <span onClick={() => onAccept('cookies')}
+          style={{ color: '#60A5FA', cursor: 'pointer', textDecoration: 'underline' }}>
+          Política de Cookies
+        </span>.
+      </p>
+      <button onClick={() => onAccept(true)} style={{
+        background: '#2563EB', color: '#fff', border: 'none',
+        borderRadius: 8, padding: '10px 24px', fontWeight: 600,
+        fontSize: 14, cursor: 'pointer', whiteSpace: 'nowrap'
+      }}>
+        Aceptar
+      </button>
+    </div>
+  );
+}
+
+// ============================================================
 // Footer
 // ============================================================
 
-export function Footer({ t }) {
+export function Footer({ t, onLegal }) {
   return (
     <footer className="footer">
       <div className="container footer-inner">
         <div className="logo">SU<span className="accent">T</span>AN</div>
-        <div>{t.footer.copy}</div>
+        <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap', justifyContent: 'center' }}>
+          <span style={{ color: '#475569', fontSize: 13 }}>{t.footer.copy}</span>
+          <span onClick={() => onLegal('aviso')} style={{ color: '#475569', fontSize: 13, cursor: 'pointer', textDecoration: 'underline' }}>Aviso Legal</span>
+          <span onClick={() => onLegal('privacidad')} style={{ color: '#475569', fontSize: 13, cursor: 'pointer', textDecoration: 'underline' }}>Privacidad</span>
+          <span onClick={() => onLegal('cookies')} style={{ color: '#475569', fontSize: 13, cursor: 'pointer', textDecoration: 'underline' }}>Cookies</span>
+        </div>
         <a href={'mailto:' + t.footer.email} className="footer-email">{t.footer.email}</a>
       </div>
     </footer>

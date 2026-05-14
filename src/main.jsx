@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import { inject } from '@vercel/analytics';
 import { TRANSLATIONS } from './translations.js';
-import { Atmosphere, Nav, Hero, Services, Process, WhySutan, Contact, Footer } from './components.jsx';
+import { Atmosphere, Nav, Hero, Services, Process, WhySutan, Contact, Footer, LegalModal, CookieBanner } from './components.jsx';
 import './styles.css';
 
 inject();
@@ -11,7 +11,20 @@ function App() {
   const [lang, setLang] = useState('es');
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [legalDoc, setLegalDoc] = useState(null);
+  const [cookiesAccepted, setCookiesAccepted] = useState(
+    () => localStorage.getItem('sutan_cookies') === 'true'
+  );
   const t = TRANSLATIONS[lang];
+
+  const handleCookies = (val) => {
+    if (val === true) {
+      localStorage.setItem('sutan_cookies', 'true');
+      setCookiesAccepted(true);
+    } else {
+      setLegalDoc(val);
+    }
+  };
 
   // Scroll state for nav
   useEffect(() => {
@@ -52,7 +65,9 @@ function App() {
         <WhySutan t={t} />
         <Contact t={t} />
       </main>
-      <Footer t={t} />
+      <Footer t={t} onLegal={setLegalDoc} />
+      {legalDoc && <LegalModal doc={legalDoc} onClose={() => setLegalDoc(null)} />}
+      {!cookiesAccepted && <CookieBanner onAccept={handleCookies} />}
     </>
   );
 }
