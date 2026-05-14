@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import emailjs from '@emailjs/browser';
 
 // ============================================================
 // Icons (simple inline SVGs — placeholder iconography)
@@ -288,15 +289,35 @@ export function WhySutan({ t }) {
 
 export function Contact({ t }) {
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState(false);
   const [form, setForm] = useState({ name: '', company: '', email: '', service: '', message: '' });
 
   const onSubmit = (e) => {
     e.preventDefault();
-    setSent(true);
-    setTimeout(() => {
-      setSent(false);
+    setSending(true);
+    setError(false);
+
+    emailjs.send(
+      import.meta.env.VITE_EMAILJS_SERVICE_ID,
+      import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+      {
+        from_name: form.name,
+        company: form.company,
+        from_email: form.email,
+        service: form.service,
+        message: form.message,
+      },
+      import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+    ).then(() => {
+      setSending(false);
+      setSent(true);
       setForm({ name: '', company: '', email: '', service: '', message: '' });
-    }, 4500);
+      setTimeout(() => setSent(false), 5000);
+    }).catch(() => {
+      setSending(false);
+      setError(true);
+    });
   };
   const set = (k) => (e) => setForm({ ...form, [k]: e.target.value });
 
@@ -346,8 +367,13 @@ export function Contact({ t }) {
                   <label>{t.contact.message}</label>
                   <textarea className="textarea" required value={form.message} onChange={set('message')} placeholder={t.contact.messagePh} />
                 </div>
-                <button type="submit" className="btn btn-primary btn-lg submit">
-                  {t.contact.submit} <IconArrow />
+                {error && (
+                  <p style={{ gridColumn: '1/-1', color: '#f87171', fontSize: 14, margin: 0 }}>
+                    Hubo un error al enviar. Inténtalo de nuevo.
+                  </p>
+                )}
+                <button type="submit" className="btn btn-primary btn-lg submit" disabled={sending}>
+                  {sending ? 'Enviando...' : <>{t.contact.submit} <IconArrow /></>}
                 </button>
               </form>
             )}
