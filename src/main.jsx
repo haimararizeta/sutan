@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
+import { inject } from '@vercel/analytics';
 import { TRANSLATIONS } from './translations.js';
 import { Atmosphere, Nav, Hero, Services, Process, WhySutan, Contact, Footer } from './components.jsx';
 import './styles.css';
+
+inject();
 
 function App() {
   const [lang, setLang] = useState('es');
